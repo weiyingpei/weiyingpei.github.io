@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<!-- HTML5文档声明，必须放在首行，区别于HTML4的<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+<html lang="zh-CN">
+<!-- lang属性：指定文档语言为中文，利于SEO和屏幕阅读器 -->
+<head>
+    <!-- 1. 核心元数据：编码、视口、浏览器兼容 -->
+    <meta charset="UTF-8">
+    <!-- 字符编码：UTF-8是国际通用编码，替代HTML4的gb2312 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- 视口配置（移动端适配核心）：
+         - width=device-width：视口宽度等于设备宽度
+         - initial-scale=1.0：初始缩放比例1:1
+         - viewport-fit=cover：适配刘海屏/挖孔屏
+         可追加：maximum-scale=1.0, user-scalable=no（禁止用户缩放，根据需求取舍）
+    -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 强制IE使用最新内核渲染，兼容旧浏览器 -->
+
+    <!-- 2. SEO与社交分享元数据（可选，根据需求删除） -->
+    <meta name="description" content="HTML5规范框架，包含语义化标签、响应式布局、基础JS交互">
+    <!-- 页面描述，利于搜索引擎收录 -->
+    <meta name="keywords" content="HTML5, CSS3, 响应式, 语义化">
+    <!-- 页面关键词 -->
+    <meta property="og:title" content="HTML5规范框架">
+    <meta property="og:description" content="HTML5规范框架，适配移动端">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://example.com/og-image.jpg"> <!-- 社交分享图片 -->
+    <meta property="og:url" content="https://example.com">
+    <!-- Open Graph协议：用于微信、Facebook等社交平台分享时的预览效果 -->
+
+    <!-- 3. 网站图标（可选，替换为自己的图标路径） -->
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png"> <!-- 苹果设备桌面图标 -->
+
+    <!-- 4. 资源预加载/预连接（性能优化，可选） -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"> <!-- 预连接字体CDN -->
+    <link rel="preload" href="./css/main.css" as="style"> <!-- 预加载关键CSS -->
+
+    <!-- 5. 外部资源引入：Normalize.css（替代CSS Reset，保留有用的默认样式） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
+    <!-- Normalize.css：统一不同浏览器的默认样式，比传统的reset.css更友好 -->
+
+    <!-- 6. 自定义CSS（内部样式，也可拆分为外部CSS文件） -->
+    <style>
+        /* -------------------------- 全局样式：CSS变量 + 基础重置 -------------------------- */
+        :root {
+            /* 颜色变量：方便统一修改主题色，暗黑模式可覆盖 */
+            --primary-color: #2c3e50; /* 主色调 */
+            --secondary-color: #3498db; /* 辅助色 */
+            --text-color: #333; /* 文本颜色 */
+            --bg-color: #f8f9fa; /* 背景色 */
+            --card-bg: #ffffff; /* 卡片背景 */
+            --border-color: #e0e0e0; /* 边框色 */
+
+            /* 布局变量 */
+            --container-width: 1200px; /* 桌面端容器最大宽度 */
+            --gutter: 1.5rem; /* 间距统一值 */
+            --header-height: 60px; /* 头部高度 */
+
+            /* 字体变量 */
+            --main-font: "Microsoft YaHei", "PingFang SC", sans-serif; /* 中文字体 */
+            --font-size-base: 16px; /* 基础字体大小（移动端16px是最小可阅读尺寸） */
+            --line-height-base: 1.6; /* 行高，提升可读性 */
+        }
+
+        /* 暗黑模式变量（通过body.dark类切换） */
+        body.dark {
+            --primary-color: #1abc9c;
+            --text-color: #f1f1f1;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --border-color: #333;
+        }
+
+        /* 全局盒模型：border-box让宽高包含边框和内边距，避免布局计算麻烦 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--main-font);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-base);
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: background-color 0.3s ease, color 0.3s ease; /* 过渡动画，提升体验 */
+        }
+
+        /* 容器类：居中+限制最大宽度，适配不同屏幕 */
+        .container {
+            width: 100%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 var(--gutter);
+        }
+
+        /* 清除浮动（兼容旧场景，可选） */
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* -------------------------- 头部样式：Header + 导航 -------------------------- */
+        header {
+            height: var(--header-height);
+            background-color: var(--primary-color);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 999; /* 固定在顶部，避免被其他元素覆盖 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影提升层次感 */
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+
+        /* 导航按钮：移动端汉堡菜单（默认隐藏，小屏幕显示） */
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* 导航列表：桌面端横向，移动端竖向 */
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 2rem; /* 替代margin，更灵活的间距 */
+        }
+
+        .nav-item a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-item a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* -------------------------- 主要内容样式：Main + 区块 -------------------------- */
+        main {
+            padding: 2rem 0;
+            min-height: calc(100vh - var(--header-height) - 120px); /* 保证页脚在底部 */
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 3fr 1fr; /* 主内容：侧边栏 = 3:1 */
+            gap: var(--gutter);
+            margin-top: 2rem;
+        }
+
+        .article-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: var(--gutter);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        /* 侧边栏样式 */
+        aside {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .sidebar-links {
+            list-style: none;
+        }
+
+        .sidebar-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .sidebar-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .sidebar-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* -------------------------- HTML5新元素样式：视频、音频、表单 -------------------------- */
+        .media-container {
+            margin: 1.5rem 0;
+        }
+
+        video, audio {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .form-example {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-family: inherit;
+        }
+
+        /* HTML5新表单控件样式 */
+        input[type="email"], input[type="tel"], input[type="date"], input[type="range"] {
+            width: 100%;
+        }
+
+        button[type="submit"] {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        /* -------------------------- 功能按钮：回到顶部 + 暗黑模式 -------------------------- */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--secondary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 998;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+
+        /* -------------------------- 页脚样式 -------------------------- */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .copyright {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        /* -------------------------- 媒体查询：响应式适配（移动端优先） -------------------------- */
+        /* 平板及以下（768px） */
+        @media (max-width: 768px) {
+            /* 导航：隐藏列表，显示汉堡按钮 */
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-list {
+                position: absolute;
+                top: var(--header-height);
+                left: 0;
+                right: 0;
+                background-color: var(--primary-color);
+                flex-direction: column;
+                padding: 1rem var(--gutter);
+                gap: 1rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+
+            .nav-list.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            /* 内容网格：从3:1改为单列 */
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* 字体缩小，提升移动端可读性 */
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* 手机小屏（480px） */
+        @media (max-width: 480px) {
+            :root {
+                --gutter: 1rem;
+                --font-size-base: 14px;
+            }
+
+            .header-container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+
+    <!-- 页面标题：SEO核心，必须有 -->
+    <title>HTML5规范框架 | 响应式网站模板</title>
+</head>
+
+<body>
+    <!-- -------------------------- 头部：包含Logo + 导航 + 功能按钮 -------------------------- -->
+    <header>
+        <div class="container header-container">
+            <!-- Logo -->
+            <a href="#" class="logo">姜晓晓缝纫</a>
+
+            <!-- 导航区域 -->
+            <nav class="main-nav">
+                <!-- 移动端汉堡按钮 -->
+                <button class="nav-toggle" id="navToggle">☰</button>
+                <!-- 导航列表 -->
+                <ul class="nav-list" id="navList">
+                    <li class="nav-item"><a href="#home">姜晓晓</a></li>
+                    <li class="nav-item"><a href="#content">Stitch线迹</a></li>
+                    <li class="nav-item"><a href="#media">系列</a></li>
+                    <li class="nav-item"><a href="#form">会员</a></li>
+                    <li class="nav-item"><a href="#about">关于</a></li>
+                </ul>
+            </nav>
+
+            <!-- 暗黑模式切换按钮 -->
+            <button class="dark-mode-toggle" id="darkModeToggle">🌙</button>
+        </div>
+    </header>
+
+    <!-- -------------------------- 主要内容：HTML5语义化核心区域（唯一的main标签） -------------------------- -->
+    <main class="container">
+        <!-- 首页区块 -->
+        <section id="home">
+            <h2 class="section-title">精艺手工</h2>
+            <p>预先水洗处理，ykk拉链，名师布。</p>
+
+            <!-- 内容网格：主内容 + 侧边栏 -->
+            <div class="content-grid">
+                <!-- 主内容区域 -->
+                <div class="main-content">
+                    <!-- 文章卡片示例 -->
+                    <article class="article-card">
+                        <h3 class="article-title">HTML5语义化标签的优势</h3>
+                        <p>HTML5引入了&lt;header&gt;、&lt;nav&gt;、&lt;main&gt;、&lt;section&gt;、&lt;article&gt;、&lt;aside&gt;、&lt;footer&gt;等语义标签，相比HTML4的&lt;div&gt;布局，更利于搜索引擎抓取（SEO）、屏幕阅读器识别（无障碍）和开发者维护。</p>
+                    </article>
+
+                    <!-- 媒体区块：视频 + 音频（HTML5新元素） -->
+                    <section id="media" class="media-container">
+                        <h3 class="article-title">HTML5媒体元素：视频与音频</h3>
+                        <p>替代HTML4的Flash，原生支持视频和音频播放：</p>
+                        <!-- 视频元素：controls显示控制栏，poster设置封面图 -->
+                        <video controls poster="./video-cover.jpg">
+                            <source src="https://www.w3school.com.cn/i/movie.mp4" type="video/mp4">
+                            你的浏览器不支持HTML5视频播放，请升级浏览器。
+                        </video>
+
+                        <!-- 音频元素 -->
+                        <h4 style="margin-top: 1rem;">音频示例</h4>
+                        <audio controls>
+                            <source src="./sample.mp3" type="audio/mpeg">
+                            你的浏览器不支持HTML5音频播放，请升级浏览器。
+                        </audio>
+                    </section>
+
+                    <!-- 表单区块：HTML5新表单控件 -->
+                    <section id="form" class="form-example">
+                        <h3 class="article-title">HTML5新表单控件</h3>
+                        <form id="sampleForm">
+                            <div class="form-group">
+                                <label for="email">邮箱（type="email"）</label>
+                                <input type="email" id="email" name="email" required placeholder="请输入邮箱">
+                            </div>
+                            <div class="form-group">
+                                <label for="tel">电话（type="tel"）</label>
+                                <input type="tel" id="tel" name="tel" placeholder="请输入电话号码">
+                            </div>
+                            <div class="form-group">
+                                <label for="date">日期（type="date"）</label>
+                                <input type="date" id="date" name="date">
+                            </div>
+                            <div class="form-group">
+                                <label for="range">滑块（type="range"）</label>
+                                <input type="range" id="range" name="range" min="0" max="100" value="50">
+                                <span id="rangeValue">50</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">留言（textarea）</label>
+                                <textarea id="message" name="message" rows="4" placeholder="请输入留言内容"></textarea>
+                            </div>
+                            <button type="submit">提交</button>
+                        </form>
+                    </section>
+                </div>
+
+                <!-- 侧边栏：辅助内容 -->
+                <aside>
+                    <h3 class="sidebar-title">侧边栏</h3>
+                    <p>HTML5 &lt;aside&gt;标签：用于页面的辅助内容（相关链接、作者信息、广告等）。</p>
+                    <ul class="sidebar-links">
+                        <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML" target="_blank">MDN HTML5文档</a></li>
+                        <li><a href="https://www.w3.org/TR/html5/" target="_blank">W3C HTML5规范</a></li>
+                        <li><a href="https://css-tricks.com/" target="_blank">CSS Tricks（响应式布局）</a></li>
+                    </ul>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <!-- -------------------------- 页脚：版权 + 链接 -------------------------- -->
+    <footer>
+        <div class="container">
+            <ul class="footer-links">
+                <li><a href="#privacy">隐私政策</a></li>
+                <li><a href="#terms">使用条款</a></li>
+                <li><a href="#contact">联系我们</a></li>
+            </ul>
+            <p class="copyright">&copy; 2025 姜晓晓缝纫工作室 | 苏州</p>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+
+    <!-- -------------------------- JavaScript：基础交互（放在body底部，避免阻塞渲染） -------------------------- -->
+    <script>
+        // 等待DOM加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. 响应式导航：汉堡按钮切换导航显示/隐藏
+            const navToggle = document.getElementById('navToggle');
+            const navList = document.getElementById('navList');
+            navToggle.addEventListener('click', function() {
+                navList.classList.toggle('active');
+                // 切换按钮图标（汉堡/叉号）
+                navToggle.textContent = navList.classList.contains('active') ? '✕' : '☰';
+            });
+
+            // 2. 回到顶部功能
+            const backToTop = document.getElementById('backToTop');
+            window.addEventListener('scroll', function() {
+                // 滚动超过300px时显示按钮
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+            backToTop.addEventListener('click', function(e) {
+                e.preventDefault();
+                // 平滑滚动到顶部
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // 3. 暗黑模式切换
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+            // 从本地存储读取暗黑模式状态（刷新后保留）
+            if (localStorage.getItem('darkMode') === 'on') {
+                body.classList.add('dark');
+                darkModeToggle.textContent = '☀️';
+            }
+            darkModeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark');
+                if (body.classList.contains('dark')) {
+                    localStorage.setItem('darkMode', 'on');
+                    darkModeToggle.textContent = '☀️';
+                } else {
+                    localStorage.setItem('darkMode', 'off');
+                    darkModeToggle.textContent = '🌙';
+                }
+            });
+
+            // 4. 表单滑块值实时显示
+            const rangeInput = document.getElementById('range');
+            const rangeValue = document.getElementById('rangeValue');
+            rangeInput.addEventListener('input', function() {
+                rangeValue.textContent = this.value;
+            });
+
+            // 5. 表单提交验证（原生验证 + JS辅助）
+            const sampleForm = document.getElementById('sampleForm');
+            sampleForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // 阻止默认提交
+                // 手动验证（可选，原生required已做基础验证）
+                const email = document.getElementById('email').value;
+                if (!email.includes('@')) {
+                    alert('请输入有效的邮箱地址！');
+                    return;
+                }
+                alert('表单提交成功！');
+                this.reset(); // 重置表单
+            });
+
+            // 6. 设备检测（可选，用于调试）
+            const isMobile = /iPhone|iPad|iPod|Android|Mobile/.test(navigator.userAgent);
+            console.log('设备类型：', isMobile ? '移动端' : '桌面端');
+        });
+    </script>
+</body>
+</html>
