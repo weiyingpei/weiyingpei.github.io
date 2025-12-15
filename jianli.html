@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>张三 - 前端开发工程师简历</title>
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局样式重置与基础变量 */
+        :root {
+            --primary-color: #3498db;
+            --primary-gradient: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            --text-color: #333;
+            --text-light: #7f8c8d;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --sidebar-bg: #2c3e50;
+            --sidebar-text: #ecf0f1;
+            --border-color: #e0e0e0;
+            --hover-color: #e3f2fd;
+            --avatar-border: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+
+        /* 深色模式变量 */
+        [data-theme="dark"] {
+            --primary-color: #4fa3e0;
+            --primary-gradient: linear-gradient(135deg, #4fa3e0 0%, #3d8eb9 100%);
+            --text-color: #ecf0f1;
+            --text-light: #bdc3c7;
+            --bg-color: #1a2634;
+            --card-bg: #2c3e50;
+            --sidebar-bg: #1e2938;
+            --sidebar-text: #f1f5f9;
+            --border-color: #34495e;
+            --hover-color: #34495e;
+            --avatar-border: linear-gradient(135deg, #4fa3e0 0%, #3d8eb9 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: "Inter", "Microsoft YaHei", "PingFang SC", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* 简历容器 */
+        .resume-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        /* 侧边栏样式 */
+        .sidebar {
+            width: 300px;
+            background: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            padding: 40px 25px;
+        }
+
+        /* 新增：头像样式 */
+        .avatar-wrapper {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-wrapper::before {
+            content: "";
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: var(--avatar-border);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--sidebar-bg);
+            z-index: 1;
+        }
+
+        /* 个人信息头部 */
+        .profile {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 30px;
+        }
+
+        .profile h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile .job-title {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        /* 联系方式 */
+        .contact {
+            margin-bottom: 35px;
+        }
+
+        .contact h2, .skills h2, .about h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        .contact h2::before, .skills h2::before, .about h2::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 18px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .contact-item i {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            margin-right: 12px;
+        }
+
+        .contact-item a {
+            color: var(--sidebar-text);
+            text-decoration: none;
+        }
+
+        .contact-item a:hover {
+            color: var(--primary-color);
+        }
+
+        /* 技能模块 */
+        .skills {
+            margin-bottom: 35px;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: rgba(52, 152, 219, 0.15);
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            border: 1px solid var(--primary-color);
+        }
+
+        /* 自我评价 */
+        .about p {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-light);
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            padding: 40px 35px;
+        }
+
+        /* 内容模块通用样式 */
+        .content-section {
+            margin-bottom: 40px;
+        }
+
+        .content-section h2 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: var(--sidebar-bg);
+            display: flex;
+            align-items: center;
+        }
+
+        [data-theme="dark"] .content-section h2 {
+            color: var(--primary-color);
+        }
+
+        .content-section h2 i {
+            color: var(--primary-color);
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        /* 经历项样式 */
+        .experience-item {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .experience-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .item-header .title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--sidebar-bg);
+        }
+
+        [data-theme="dark"] .item-header .title {
+            color: var(--primary-color);
+        }
+
+        .item-header .date {
+            font-size: 14px;
+            color: var(--text-light);
+            background: var(--hover-color);
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .item-subtitle {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .item-content ul {
+            padding-left: 20px;
+        }
+
+        .item-content li {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        /* 深色模式切换按钮 */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .resume-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 30px 20px;
+            }
+
+            /* 移动端头像尺寸微调 */
+            .avatar-wrapper {
+                width: 100px;
+                height: 100px;
+            }
+
+            .main-content {
+                padding: 30px 20px;
+            }
+
+            .item-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 深色模式切换按钮 -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- 简历主体容器 -->
+    <div class="resume-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <!-- 个人信息 -->
+            <div class="profile">
+                <!-- 新增：头像区域 -->
+                <div class="avatar-wrapper">
+                    <img src="your-avatar.jpg" alt="个人头像" class="avatar">
+                </div>
+                <h1>张三</h1>
+                <p class="job-title">前端开发工程师</p>
+            </div>
+
+            <!-- 联系方式 -->
+            <div class="contact">
+                <h2>联系方式</h2>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>13800138000</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:zhangsan@example.com">zhangsan@example.com</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-github"></i>
+                    <a href="https://github.com/zhangsan" target="_blank">github.com/zhangsan</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>北京市朝阳区</span>
+                </div>
+            </div>
+
+            <!-- 技能清单 -->
+            <div class="skills">
+                <h2>专业技能</h2>
+                <div class="skill-list">
+                    <span class="skill-tag">HTML/CSS/JS</span>
+                    <span class="skill-tag">Vue3</span>
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">TypeScript</span>
+                    <span class="skill-tag">Vite</span>
+                    <span class="skill-tag">Webpack</span>
+                    <span class="skill-tag">小程序开发</span>
+                </div>
+            </div>
+
+            <!-- 自我评价 -->
+            <div class="about">
+                <h2>自我评价</h2>
+                <p>拥有3年前端开发经验，熟悉现代前端工程化技术栈，注重用户体验和代码质量。具备良好的团队协作能力和问题解决能力，能够快速适应新的技术和业务场景。</p>
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <!-- 工作经历 -->
+            <div class="content-section">
+                <h2><i class="fas fa-briefcase"></i>工作经历</h2>
+                <div class="experience-item">
+                    <div class="item-header">
+                        <span class="title">XX科技有限公司 - 前端开发工程师</span>
+                        <span class="date">2022.07 - 至今</span>
+                    </div>
+                    <div class="item-subtitle">负责企业SaaS产品的前端开发与迭代</div>
+                    <div class="item-content">
+                        <ul>
+                            <li>使用Vue3 + TypeScript重构现有后台管理系统，减少30%的冗余代码，页面加载速度提升40%；</li>
+                            <li>参与移动端H5商城项目开发，基于Vant组件库实现多端适配，兼容iOS/Android主流浏览器；</li>
+                            <li>封装通用业务组件库，提升团队开发效率50%，并编写详细的组件文档；</li>
+                            <li>与后端团队协作，设计并实现前后端交互接口，优化数据请求逻辑，降低接口报错率25%。</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <div class="item-header">
+                        <span class="title">XX互联网公司 - 前端实习生</span>
+                        <span class="date">2022.03 - 2022.06</span>
+                    </div>
+                    <div class="item-subtitle">参与公司官网及营销活动页的开发</div>
+                    <div class="item-content">
+                        <ul>
+                            <li>使用HTML/CSS/JS完成5+营销活动页的开发，配合设计团队实现视觉还原；</li>
+                            <li>优化官网性能，修复跨浏览器兼容性问题，提升页面用户留存率15%。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 教育背景 -->
+            <div class="content-section">
+                <h2><i class="fas fa-graduation-cap"></i>教育背景</h2>
+                <div class="experience-item">
+                    <div class="item-header">
+                        <span class="title">XX大学 - 计算机科学与技术（本科）</span>
+                        <span class="date">2018.09 - 2022.06</span>
+                    </div>
+                    <div class="item-subtitle">GPA：3.8/4.0 | 专业排名：前5% | 校级奖学金获得者</div>
+                    <div class="item-content">
+                        <ul>
+                            <li>主修课程：数据结构、计算机网络、Web前端开发、操作系统等；</li>
+                            <li>参与校级科研项目《基于React的校园信息管理系统》，负责前端模块开发。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 项目经验 -->
+            <div class="content-section">
+                <h2><i class="fas fa-project-diagram"></i>项目经验</h2>
+                <div class="experience-item">
+                    <div class="item-header">
+                        <span class="title">个人博客系统</span>
+                        <span class="date">2023.01 - 2023.03</span>
+                    </div>
+                    <div class="item-subtitle">基于Nuxt3 + Tailwind CSS开发的静态博客</div>
+                    <div class="item-content">
+                        <ul>
+                            <li>使用Nuxt3的服务端渲染(SSR)功能，提升博客SEO排名和首屏加载速度；</li>
+                            <li>集成Markdown编辑器，实现文章的在线编写、预览和发布；</li>
+                            <li>部署至GitHub Pages，通过GitHub Actions实现自动化构建部署。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 深色模式切换逻辑 -->
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // 检测本地存储的主题偏好
+        const savedTheme = localStorage.getItem('resume-theme');
+        if (savedTheme) {
+            html.setAttribute('data-theme', savedTheme);
+            updateToggleIcon(savedTheme);
+        }
+
+        // 切换主题
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('resume-theme', newTheme);
+            updateToggleIcon(newTheme);
+        });
+
+        // 更新切换按钮图标
+        function updateToggleIcon(theme) {
+            const icon = themeToggle.querySelector('i');
+            if (theme === 'dark') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+    </script>
+</body>
+</html>
