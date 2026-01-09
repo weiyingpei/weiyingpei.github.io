@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>醇香咖啡 - 精品咖啡体验店</title>
+    <style>
+        /* 全局样式重置与基础设置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+            scroll-behavior: smooth; /* 平滑滚动 */
+        }
+
+        /* 咖啡色系变量定义 */
+        :root {
+            --coffee-black: #2C2622;    /* 深咖啡黑 - 主文本/导航 */
+            --coffee-dark: #4A3C31;     /* 深咖啡色 - 背景/边框 */
+            --coffee-mid: #7D5A4F;      /* 中咖啡色 - 强调色 */
+            --coffee-light: #A67C52;    /* 浅咖啡色 - 按钮/悬停 */
+            --coffee-cream: #F5E9D6;    /* 咖啡奶油色 - 背景 */
+            --coffee-beige: #E8D9C3;    /* 米色 - 卡片/分隔 */
+            --white: #FFFFFF;           /* 白色 - 文本/背景 */
+            --shadow: rgba(0, 0, 0, 0.1); /* 阴影色 */
+        }
+
+        /* 页面基础样式 */
+        body {
+            background-color: var(--coffee-cream);
+            color: var(--coffee-black);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* 通用类 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            padding: 6rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+        }
+
+        .section-title.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--coffee-dark);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--coffee-light);
+        }
+
+        .section-title p {
+            color: var(--coffee-mid);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 导航栏样式 */
+        nav {
+            background-color: var(--coffee-black);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.8rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: var(--white);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            color: var(--coffee-light);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--coffee-light);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--coffee-light);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* 英雄区样式 */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(44, 38, 34, 0.7), rgba(44, 38, 34, 0.5)), 
+                        url('https://s41.ax1x.com/2026/01/09/pZwoAII.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 2rem;
+            margin-top: 70px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            color: var(--white);
+            opacity: 0;
+            transform: translateX(-50px);
+            animation: fadeInRight 1s ease forwards 0.3s;
+        }
+
+        @keyframes fadeInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--coffee-cream);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.4s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--coffee-light);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--coffee-mid);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+            margin-left: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--white);
+            color: var(--coffee-dark);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 特色介绍板块 */
+        .features {
+            background-color: var(--white);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--coffee-cream);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .feature-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px var(--shadow);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--coffee-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--white);
+            font-size: 2rem;
+        }
+
+        .feature-card h3 {
+            color: var(--coffee-dark);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--coffee-mid);
+            line-height: 1.6;
+        }
+
+        /* 菜单展示板块 */
+        .menu {
+            background-color: var(--coffee-cream);
+        }
+
+        .menu-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .menu-tab {
+            padding: 0.8rem 2rem;
+            background-color: var(--white);
+            border: none;
+            border-radius: 50px;
+            color: var(--coffee-dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-tab.active, .menu-tab:hover {
+            background-color: var(--coffee-light);
+            color: var(--white);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-item {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        .menu-item.animate {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px var(--shadow);
+        }
+
+        .menu-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .menu-item:hover .menu-img {
+            transform: scale(1.1);
+        }
+
+        .menu-info {
+            padding: 1.5rem;
+        }
+
+        .menu-info h3 {
+            color: var(--coffee-dark);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .menu-price {
+            color: var(--coffee-light);
+            font-weight: 700;
+        }
+
+        .menu-desc {
+            color: var(--coffee-mid);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .menu-rating {
+            color: #FFD700;
+        }
+
+        /* 用户评价板块 */
+        .testimonials {
+            background-color: var(--white);
+            padding: 6rem 0;
+        }
+
+        .testimonial-slider {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .testimonial-wrapper {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-card {
+            min-width: 100%;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .testimonial-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1.5rem;
+            border: 5px solid var(--coffee-cream);
+        }
+
+        .testimonial-text {
+            font-size: 1.2rem;
+            color: var(--coffee-mid);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .testimonial-name {
+            font-weight: 700;
+            color: var(--coffee-dark);
+            font-size: 1.1rem;
+        }
+
+        .testimonial-role {
+            color: var(--coffee-light);
+            font-size: 0.9rem;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--coffee-light);
+            color: var(--white);
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .slider-btn:hover {
+            background-color: var(--coffee-mid);
+        }
+
+        .prev-btn {
+            left: -25px;
+        }
+
+        .next-btn {
+            right: -25px;
+        }
+
+        /* 门店信息板块 */
+        .store {
+            background-color: var(--coffee-cream);
+            padding: 6rem 0;
+        }
+
+        .store-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .store-img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px var(--shadow);
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.8s ease;
+        }
+
+        .store-img.animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .store-details {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.8s ease;
+        }
+
+        .store-details.animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .store-details h3 {
+            font-size: 2rem;
+            color: var(--coffee-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .store-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .store-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--coffee-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+        }
+
+        .store-text h4 {
+            color: var(--coffee-dark);
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .store-text p {
+            color: var(--coffee-mid);
+        }
+
+        /* 订阅板块 */
+        .subscribe {
+            background: linear-gradient(rgba(77, 60, 49, 0.9), rgba(77, 60, 49, 0.9)), 
+                        url('https://s41.ax1x.com/2026/01/09/pZwoAII.jpg');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+            padding: 6rem 0;
+        }
+
+        .subscribe-content {
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .subscribe-content.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .subscribe h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .subscribe p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: var(--coffee-cream);
+        }
+
+        .subscribe-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .subscribe-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .subscribe-btn {
+            padding: 1rem 2rem;
+            background-color: var(--coffee-light);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .subscribe-btn:hover {
+            background-color: var(--coffee-mid);
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: var(--coffee-black);
+            color: var(--white);
+            padding: 5rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--coffee-light);
+        }
+
+        .footer-col p {
+            color: #ccc;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--coffee-light);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: var(--coffee-light);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #999;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+            
+            .store-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .btn {
+                display: block;
+                width: 100%;
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+            
+            .btn-secondary {
+                margin-left: 0;
+            }
+            
+            .subscribe-form {
+                flex-direction: column;
+            }
+            
+            .section {
+                padding: 4rem 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <!-- 引入字体图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-coffee"></i>
+                醇香咖啡
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#features">特色</a></li>
+                <li><a href="#menu">菜单</a></li>
+                <li><a href="#testimonials">评价</a></li>
+                <li><a href="#store">门店</a></li>
+                <li><a href="#subscribe">订阅</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 英雄区 -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>一杯好咖啡<br>唤醒美好生活</h1>
+                <p>精选全球顶级咖啡豆，手工烘焙，只为给你带来最纯粹的咖啡体验</p>
+                <a href="#menu" class="btn btn-primary">立即选购</a>
+                <a href="#store" class="btn btn-secondary">找到门店</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 特色介绍板块 -->
+    <section id="features" class="section features">
+        <div class="container">
+            <div class="section-title">
+                <h2>我们的特色</h2>
+                <p>每一杯咖啡都蕴含我们对品质的极致追求</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>精选咖啡豆</h3>
+                    <p>从全球知名咖啡产区直采优质咖啡豆，确保每一颗都新鲜饱满，风味独特</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3>手工烘焙</h3>
+                    <p>专业烘焙师手工小批量烘焙，精准控制温度和时间，释放咖啡豆最佳风味</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hand-sparkles"></i>
+                    </div>
+                    <h3>大师手冲</h3>
+                    <p>认证咖啡师精心冲泡，根据不同咖啡豆特性调整参数，呈现完美口感</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 菜单展示板块 -->
+    <section id="menu" class="section menu">
+        <div class="container">
+            <div class="section-title">
+                <h2>咖啡菜单</h2>
+                <p>丰富的咖啡品类，满足你不同的口味需求</p>
+            </div>
+            <div class="menu-tabs">
+                <button class="menu-tab active">全部</button>
+                <button class="menu-tab">手冲咖啡</button>
+                <button class="menu-tab">意式咖啡</button>
+                <button class="menu-tab">特调咖啡</button>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <img src="https://s41.ax1x.com/2026/01/09/pZwoeRf.jpg" alt="埃塞俄比亚手冲" class="menu-img">
+                    <div class="menu-info">
+                        <h3>埃塞俄比亚手冲 <span class="menu-price">¥42</span></h3>
+                        <p class="menu-desc">浅度烘焙，花香果香浓郁，酸度明亮，回甘持久</p>
+                        <div class="menu-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <img src="https://s41.ax1x.com/2026/01/09/pZwolZj.jpg" alt="拿铁咖啡" class="menu-img">
+                    <div class="menu-info">
+                        <h3>经典拿铁 <span class="menu-price">¥32</span></h3>
+                        <p class="menu-desc">浓郁意式浓缩搭配丝滑蒸奶，口感醇厚，奶香四溢</p>
+                        <div class="menu-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <img src="https://s41.ax1x.com/2026/01/09/pZwoKsg.jpg" alt="焦糖玛奇朵" class="menu-img">
+                    <div class="menu-info">
+                        <h3>焦糖玛奇朵 <span class="menu-price">¥36</span></h3>
+                        <p class="menu-desc">浓缩咖啡+蒸奶+奶泡，淋上焦糖酱，甜而不腻</p>
+                        <div class="menu-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <img src="https://s41.ax1x.com/2026/01/09/pZwoVit.jpg" alt="冰美式" class="menu-img">
+                    <div class="menu-info">
+                        <h3>冰美式咖啡 <span class="menu-price">¥28</span></h3>
+                        <p class="menu-desc">双倍浓缩咖啡加冰水，清爽提神，口感干净</p>
+                        <div class="menu-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <img src="https://s41.ax1x.com/2026/01/09/pZwoAII.jpg" alt="摩卡咖啡" class="menu-img">
+                    <div class="menu-info">
+                        <h3>巧克力摩卡 <span class="menu-price">¥38</span></h3>
+                        <p class="menu-desc">浓缩咖啡+巧克力酱+蒸奶+奶油顶，浓郁香甜</p>
+                        <div class="menu-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <img src="https://s41.ax1x.com/2026/01/09/pZwolZj.jpg" alt="桂花拿铁" class="menu-img">
+                    <div class="menu-info">
+                        <h3>桂花拿铁 <span class="menu-price">¥39</span></h3>
+                        <p class="menu-desc">特调拿铁加入桂花蜜，桂花香与咖啡香完美融合</p>
+                        <div class="menu-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 用户评价板块 -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>顾客评价</h2>
+                <p>听听我们的顾客怎么说</p>
+            </div>
+            <div class="testimonial-slider">
+                <button class="slider-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+                <div class="testimonial-wrapper">
+                    <div class="testimonial-card">
+                        <img src="https://s41.ax1x.com/2026/01/09/pZwomz8.jpg" alt="顾客头像" class="testimonial-img">
+                        <p class="testimonial-text">"这里的埃塞俄比亚手冲是我喝过最好的，花香非常突出，酸度平衡得恰到好处，环境也很舒适，是我周末的必打卡之地。"</p>
+                        <h4 class="testimonial-name">李女士</h4>
+                        <p class="testimonial-role">忠实顾客 · 1年</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <img src="https://s41.ax1x.com/2026/01/09/pZwoeRf.jpg" alt="顾客头像" class="testimonial-img">
+                        <p class="testimonial-text">"作为咖啡爱好者，我尝遍了城里的咖啡店，这里的拿铁奶泡绵密，咖啡风味浓郁，性价比超高，已经推荐给所有朋友了。"</p>
+                        <h4 class="testimonial-name">张先生</h4>
+                        <p class="testimonial-role">咖啡爱好者 · 6个月</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <img src="https://s41.ax1x.com/2026/01/09/pZwoZJP.jpg" alt="顾客头像" class="testimonial-img">
+                        <p class="testimonial-text">"桂花拿铁真的惊艳到我了！桂花的香气和咖啡完美融合，不甜不腻，店员服务也特别好，环境安静适合办公。"</p>
+                        <h4 class="testimonial-name">王女士</h4>
+                        <p class="testimonial-role">新晋顾客 · 1个月</p>
+                    </div>
+                </div>
+                <button class="slider-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 门店信息板块 -->
+    <section id="store" class="store">
+        <div class="container">
+            <div class="section-title">
+                <h2>门店信息</h2>
+                <p>欢迎光临我们的线下门店，体验沉浸式咖啡文化</p>
+            </div>
+            <div class="store-content">
+                <img src="https://s41.ax1x.com/2026/01/09/pZwoMLQ.jpg" alt="门店环境" class="store-img">
+                <div class="store-details">
+                    <h3>醇香咖啡 · 旗舰店</h3>
+                    <div class="store-info">
+                        <div class="store-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="store-text">
+                            <h4>地址</h4>
+                            <p>北京市朝阳区建国路88号SOHO现代城101室</p>
+                        </div>
+                    </div>
+                    <div class="store-info">
+                        <div class="store-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="store-text">
+                            <h4>营业时间</h4>
+                            <p>周一至周五 8:00 - 22:00 | 周末 9:00 - 23:00</p>
+                        </div>
+                    </div>
+                    <div class="store-info">
+                        <div class="store-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="store-text">
+                            <h4>联系电话</h4>
+                            <p>010-8888-7777</p>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-primary" style="margin-top: 2rem;">预约到店</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 订阅板块 -->
+    <section id="subscribe" class="subscribe">
+        <div class="container">
+            <div class="subscribe-content">
+                <h2>订阅我们</h2>
+                <p>获取最新的咖啡资讯、新品上市信息和专属优惠</p>
+                <form class="subscribe-form">
+                    <input type="email" class="subscribe-input" placeholder="输入您的邮箱地址" required>
+                    <button type="submit" class="subscribe-btn">立即订阅</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>关于我们</h4>
+                    <p>醇香咖啡创立于2018年，致力于为咖啡爱好者提供高品质的咖啡产品和舒适的消费体验，坚持匠心制作，传递咖啡文化。</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-weixin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-weibo"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>快速链接</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">首页</a></li>
+                        <li><a href="#features">特色</a></li>
+                        <li><a href="#menu">菜单</a></li>
+                        <li><a href="#testimonials">评价</a></li>
+                        <li><a href="#store">门店</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>服务支持</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">会员政策</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                        <li><a href="#">退款政策</a></li>
+                        <li><a href="#">联系我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>联系方式</h4>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> 北京市朝阳区建国路88号</li>
+                        <li><i class="fas fa-phone"></i> 010-8888-7777</li>
+                        <li><i class="fas fa-envelope"></i> contact@coffee.com</li>
+                        <li><i class="fas fa-clock"></i> 8:00 - 22:00 (工作日)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 醇香咖啡 版权所有 | 京ICP备12345678号</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 动效实现 -->
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 滚动动画
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.section-title, .feature-card, .menu-item, .store-img, .store-details, .subscribe-content');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('animate');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateOnScroll);
+        // 初始加载时执行一次
+        animateOnScroll();
+
+        // 评价轮播
+        const testimonialWrapper = document.querySelector('.testimonial-wrapper');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        const testimonialCards = document.querySelectorAll('.testimonial-card');
+        let currentIndex = 0;
+
+        const updateSlider = () => {
+            testimonialWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+        };
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % testimonialCards.length;
+            updateSlider();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + testimonialCards.length) % testimonialCards.length;
+            updateSlider();
+        });
+
+        // 自动轮播
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % testimonialCards.length;
+            updateSlider();
+        }, 5000);
+
+        // 菜单标签切换
+        const menuTabs = document.querySelectorAll('.menu-tab');
+        
+        menuTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有active类
+                menuTabs.forEach(t => t.classList.remove('active'));
+                // 给当前点击的添加active类
+                tab.classList.add('active');
+                
+                // 这里可以添加实际的菜单切换逻辑
+                // 简化版：仅做样式切换，实际项目中可结合AJAX加载不同分类菜单
+            });
+        });
+    </script>
+</body>
+</html>
